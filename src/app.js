@@ -22,6 +22,4 @@ app.use(express.static("public"));
 // cookie parser for safely perform CRUD operatin in client cookies
 app.use(cookieParser());
 
-
-
 export { app };
