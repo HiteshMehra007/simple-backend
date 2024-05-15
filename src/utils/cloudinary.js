@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
-const uplaodToCloudinary = async (localFilePath) => {
+const uploadToCloudinary = async (localFilePath) => {
     try{
         // No file path found
         if(!localFilePath){
@@ -24,8 +24,19 @@ const uplaodToCloudinary = async (localFilePath) => {
         return response;
     }
     catch(error){
-        fs.unlinkSync(localFilePath); // unlink or remove the locally saved temp file
+        console.error("Error uploading to Cloudinary: ", error);
+
+        // Attempt to remove the local file if it exists
+        try {
+            fs.unlinkSync(localFilePath);
+        } catch (unlinkError) {
+            console.error("Error removing local file: ", unlinkError);
+        }
+
+        return null;
+
     }
 }
 
-export {uplaodToCloudinary}
+export {uploadToCloudinary}
+
