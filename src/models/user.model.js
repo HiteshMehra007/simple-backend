@@ -53,7 +53,7 @@ const userSchema = new Schema(
 
 // Mongoose Middleware
 // mongoose middleware are only used with async finction and don't use arrow function cuz they don't have this(model/document) refernece
-userSchema.pre("save", async function () {
+userSchema.pre("save", async function (next) {
     // check if password is modified or not
     if(!this.isModified("password")) return next();
 
@@ -78,7 +78,7 @@ userSchema.methods.generateAccessToken = function() {
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn: ACCESS_TOKEN_EXPIRY,
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
         }
     )
 }
@@ -90,7 +90,7 @@ userSchema.methods.generateRefreshToken = function() {
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
-            expiresIn: REFRESH_TOKEN_EXPIRY,
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
         }
     )
 }
